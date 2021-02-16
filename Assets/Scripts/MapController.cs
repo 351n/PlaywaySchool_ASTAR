@@ -12,14 +12,48 @@ public class MapController : MonoBehaviour
     void Start()
     {
         grid = new Grid(10, 10);
+
+        TestPathfinding();           
+    }
+
+    private void Update() {
+        if(Input.GetKeyUp(KeyCode.T)) {
+            TestPathfinding();
+        }
+    }
+
+    public void TestPathfinding() {
+        Vector2Int start = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
+        Vector2Int end = start;
+
+        while(end == start) {
+            end = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
+        }
+
+        Debug.Log($"Start {start}\nEnd {end}");
+
+
+        List<Node> path = FindPath(start, end);
+
+
+
+        if(path != null) {
+            string pathString = "Path: ";
+            foreach(Node n in path) {
+                pathString += $"\n {n.position}";
+            }
+            Debug.Log(pathString);
+        }
     }
 
     public List<Node> FindPath(Vector2Int start, Vector2Int end) {
-        List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
+        List<Node> openList = new List<Node>();
 
         Node startNode = grid.GetNode(start);
         Node endNode = grid.GetNode(end);
+
+        openList.Add(startNode);
 
 
         for(int x = 0; x < grid.width; x++) {
@@ -78,12 +112,15 @@ public class MapController : MonoBehaviour
             currentNode = currentNode.previousNode;
         }
 
+        result.Reverse();
+
         return result;
     }
 
     int CalculateDistance(Node a, Node b) {
-        int horizontal = Mathf.Abs(b.position.x - a.position.x);
-        int vertical = Mathf.Abs(b.position.y - a.position.y);
+        //Debug.Log($"Calculating dist from {a.position} to {b.position}");
+        int horizontal = Mathf.Abs(a.position.x - b.position.x);
+        int vertical = Mathf.Abs(a.position.y - b.position.y);
         int remaining = Mathf.Abs(horizontal-vertical);
 
         return DIAGONAL_COST * Mathf.Min(horizontal, vertical) + STRAIGHT_COST * remaining;

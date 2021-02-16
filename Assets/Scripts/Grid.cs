@@ -21,11 +21,15 @@ public class Grid
     }
 
     public void CreateNodes() {
+        nodes = new Node[width, height];
+
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 nodes[x, y] = new Node(this, x, y);
             }
-        }        
+        }
+
+        Debug.Log($"Nodes created {nodes.Length}");
     }
 
     internal Node GetNode(Vector2Int pos) {
@@ -33,6 +37,7 @@ public class Grid
     }
 
     public Node GetNode(int x, int y) {
+        //Debug.Log($"Getting {x},{y}");
         if(IsOnMap(x, y)) {
             return nodes[x, y];
         } else {
@@ -45,7 +50,7 @@ public class Grid
         for(int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 if(x!=0 && y != 0) {
-                    if(IsOnMap(node.position.x, node.position.y)) {
+                    if(IsOnMap(node.position.x+x, node.position.y+y)) {
                         result.Add(GetNode(node.position + new Vector2Int(x, y)));
                     }
                 }
@@ -55,6 +60,6 @@ public class Grid
     }
 
     public bool IsOnMap(int x, int y) {
-        return x < width && y < height;
+        return x < width && x>=0 && y < height && y>=0;
     }
 }

@@ -7,7 +7,7 @@ public class Node
 {
     Grid grid;
 
-    public Vector2Int position;
+    public Vector2Int position = new Vector2Int();
 
     // Pathfinding
     public int Hcost;
