@@ -23,8 +23,11 @@ public class MapController : MonoBehaviour
     }
 
     public void TestPathfinding() {
-        Vector2Int start = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
-        Vector2Int end = start;
+        //Vector2Int start = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
+        //Vector2Int end = start;
+
+        Vector2Int start = new Vector2Int(4,0);
+        Vector2Int end = new Vector2Int(1, 8);
 
         while(end == start) {
             end = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
@@ -66,23 +69,23 @@ public class MapController : MonoBehaviour
 
         startNode.Gcost = 0;
         startNode.Hcost = CalculateDistance(startNode, endNode);
-        startNode.CalculateFcost();
 
         while(openList.Count > 0) {
             Node currentNode = GetLowestFcostNode(openList);
 
             if(currentNode == endNode) {
                 return CalculatePath(endNode);
-            } else {
-                openList.Remove(currentNode);
-                closedList.Add(currentNode);
-            }     
+            } 
+
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);                
             
             foreach(Node n in grid.GetNeighbours(currentNode)) {
                 if(closedList.Contains(n)) continue;
 
                 int tempGcost = currentNode.Gcost + CalculateDistance(currentNode, n);
-                if(tempGcost < n.Gcost) {
+
+                if(tempGcost < n.Fcost) {
                     n.previousNode = currentNode;
                     n.Gcost = tempGcost;
                     n.Hcost = CalculateDistance(n, endNode);
@@ -96,7 +99,15 @@ public class MapController : MonoBehaviour
         }
 
         //No more nodes
-        Debug.LogError("Could not find path");
+        Debug.LogError($"Could not find path cList:{closedList.Count}");
+
+
+        string pathString = "Path: ";
+        foreach(Node n in closedList) {
+            pathString += $"\n {n.position}";
+        }
+
+        Debug.Log(pathString);
 
         return null;
     }
@@ -107,6 +118,7 @@ public class MapController : MonoBehaviour
         result.Add(destination);
 
         Node currentNode = destination;
+
         while(currentNode.previousNode != null) {
             result.Add(currentNode.previousNode);
             currentNode = currentNode.previousNode;

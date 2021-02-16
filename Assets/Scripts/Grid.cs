@@ -7,14 +7,12 @@ public class Grid
 {
     public int width { get; private set; }
     public int height { get; private set; }
-    Vector2 size;
 
     Node[,] nodes;
 
     public Grid(int width, int height) {
         this.width = width;
         this.height = height;
-        size = new Vector2(width,height);
         nodes = new Node[width,height];
 
         CreateNodes();
@@ -49,14 +47,12 @@ public class Grid
         List<Node> result = new List<Node>();
         for(int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                if(x!=0 && y != 0) {
-                    if(IsOnMap(node.position.x+x, node.position.y+y)) {
-                        result.Add(GetNode(node.position + new Vector2Int(x, y)));
-                    }
+                if(IsOnMap(node.position.x + x, node.position.y + y)) {
+                    result.Add(GetNode(node.position + new Vector2Int(x, y)));
                 }
             }
         }
-        return result;
+        return result;        
     }
 
     public bool IsOnMap(int x, int y) {

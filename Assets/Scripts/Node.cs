@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Node
 {
-    Grid grid;
-
     public Vector2Int position = new Vector2Int();
 
     // Pathfinding
@@ -17,13 +15,11 @@ public class Node
     public Node previousNode;
 
     public Node(Grid grid, Vector2Int position) {
-        this.grid = grid;
         this.position = position;
         this.previousNode = null;
     }
 
     public Node(Grid grid, int x, int y) {
-        this.grid = grid;
         this.position = new Vector2Int(x,y);
         this.previousNode = null;
     }
