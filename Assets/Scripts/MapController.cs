@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class MapController : MonoBehaviour
     {
         grid = new Grid(10, 10);
 
-        TestPathfinding();           
+        TestPathfinding();
     }
 
     private void Update() {
@@ -23,11 +24,8 @@ public class MapController : MonoBehaviour
     }
 
     public void TestPathfinding() {
-        //Vector2Int start = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
-        //Vector2Int end = start;
-
-        Vector2Int start = new Vector2Int(4,0);
-        Vector2Int end = new Vector2Int(1, 8);
+        Vector2Int start = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
+        Vector2Int end = start;
 
         while(end == start) {
             end = new Vector2Int(UnityEngine.Random.Range(0, 10), UnityEngine.Random.Range(0, 10));
@@ -35,9 +33,7 @@ public class MapController : MonoBehaviour
 
         Debug.Log($"Start {start}\nEnd {end}");
 
-
         List<Node> path = FindPath(start, end);
-
 
 
         if(path != null) {
@@ -46,6 +42,18 @@ public class MapController : MonoBehaviour
                 pathString += $"\n {n.position}";
             }
             Debug.Log(pathString);
+        }
+    }
+
+    private void InitializeNodes() {
+        for(int x = 0; x < grid.width; x++) {
+            for(int y = 0; y < grid.height; y++) {
+                Node node = grid.GetNode(x, y);
+                node.Gcost = int.MaxValue;
+                node.Hcost = 0;
+                node.CalculateFcost();
+                node.previousNode = null;
+            }
         }
     }
 
@@ -58,14 +66,7 @@ public class MapController : MonoBehaviour
 
         openList.Add(startNode);
 
-
-        for(int x = 0; x < grid.width; x++) {
-            for(int y = 0; y < grid.height; y++) {
-                Node node = grid.GetNode(x, y);
-                node.Gcost = int.MaxValue;
-                node.CalculateFcost();
-            }
-        }
+        InitializeNodes();
 
         startNode.Gcost = 0;
         startNode.Hcost = CalculateDistance(startNode, endNode);
@@ -102,7 +103,7 @@ public class MapController : MonoBehaviour
         Debug.LogError($"Could not find path cList:{closedList.Count}");
 
 
-        string pathString = "Path: ";
+        string pathString = "Closed list: ";
         foreach(Node n in closedList) {
             pathString += $"\n {n.position}";
         }

@@ -47,6 +47,7 @@ public class Grid
         List<Node> result = new List<Node>();
         for(int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
+                if(x == 0 && y == 0) continue;
                 if(IsOnMap(node.position.x + x, node.position.y + y)) {
                     result.Add(GetNode(node.position + new Vector2Int(x, y)));
                 }
