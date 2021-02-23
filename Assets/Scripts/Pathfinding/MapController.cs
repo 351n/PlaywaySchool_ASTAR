@@ -5,22 +5,35 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
+    #region Singleton
+
+    public static MapController instance;
+
+    void Awake() {
+        instance = this;
+    }
+
+    #endregion
+
     private const int STRAIGHT_COST = 10;
     private const int DIAGONAL_COST = 14;
 
-    public Grid grid;
+    public NodeGrid grid;
+    public GameObject tilePrefab;
 
     void Start()
     {
-        grid = new Grid(10, 10);
 
-        TestPathfinding();
     }
 
     private void Update() {
         if(Input.GetKeyUp(KeyCode.T)) {
             TestPathfinding();
         }
+    }
+
+    public void Initialize() {
+        grid = new NodeGrid(10, 10);
     }
 
     public void TestPathfinding() {
@@ -149,5 +162,9 @@ public class MapController : MonoBehaviour
             }
         }
         return result;
+    }
+
+    public GameObject SpawnTile(Vector3 pos) {
+        return Instantiate(tilePrefab, pos, MapController.instance.transform.rotation);
     }
 }

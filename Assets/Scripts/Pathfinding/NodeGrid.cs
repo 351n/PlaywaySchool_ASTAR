@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid
+public class NodeGrid
 {
+    public GameObject tilePrefab;
     public int width { get; private set; }
     public int height { get; private set; }
 
     Node[,] nodes;
 
-    public Grid(int width, int height) {
+    public NodeGrid(int width, int height) {
         this.width = width;
         this.height = height;
         nodes = new Node[width,height];
@@ -23,7 +24,10 @@ public class Grid
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                nodes[x, y] = new Node(this, x, y);
+                Node n = new Node(x, y);
+                nodes[x, y] = n;
+                var tile = MapController.instance.SpawnTile(new Vector3(x, 0, y));
+                tile.GetComponent<Tile>().node = n;
             }
         }
 
