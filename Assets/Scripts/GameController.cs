@@ -31,10 +31,11 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void UpdateEnemiesHides() {
+        EnemyController[] entities = FindObjectsOfType<EnemyController>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        foreach(EnemyController e in entities) {
+            e.UpdateHide();
+        }
     }
 }

@@ -21,11 +21,6 @@ public class MapController : MonoBehaviour
     public NodeGrid grid;
     public GameObject tilePrefab;
 
-    void Start()
-    {
-
-    }
-
     private void Update() {
         if(Input.GetKeyUp(KeyCode.T)) {
             TestPathfinding();
@@ -89,11 +84,11 @@ public class MapController : MonoBehaviour
 
             if(currentNode == endNode) {
                 return CalculatePath(endNode);
-            } 
+            }
 
             openList.Remove(currentNode);
-            closedList.Add(currentNode);                
-            
+            closedList.Add(currentNode);
+
             foreach(Node n in grid.GetNeighbours(currentNode)) {
                 if(closedList.Contains(n)) continue;
 
@@ -147,15 +142,15 @@ public class MapController : MonoBehaviour
         //Debug.Log($"Calculating dist from {a.position} to {b.position}");
         int horizontal = Mathf.Abs(a.position.x - b.position.x);
         int vertical = Mathf.Abs(a.position.y - b.position.y);
-        int remaining = Mathf.Abs(horizontal-vertical);
+        int remaining = Mathf.Abs(horizontal - vertical);
 
         return DIAGONAL_COST * Mathf.Min(horizontal, vertical) + STRAIGHT_COST * remaining;
     }
 
-    Node GetLowestFcostNode(List<Node> nodes) {        
+    Node GetLowestFcostNode(List<Node> nodes) {
         Node result = nodes[0];
         if(nodes.Count > 1) {
-            for(int i = 1;i < nodes.Count; i++) {
+            for(int i = 1; i < nodes.Count; i++) {
                 if(nodes[i].Fcost < result.Fcost) {
                     result = nodes[i];
                 }

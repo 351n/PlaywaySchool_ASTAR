@@ -8,14 +8,8 @@ public class Entity : MonoBehaviour
     public Node node;
     //multifield (?)
 
-    void Start()
-    {
+    void Start() {
         Initialize();
-    }
-
-    void Update()
-    {
-        
     }
 
     public void Initialize() {
@@ -23,7 +17,7 @@ public class Entity : MonoBehaviour
         if(MapController.instance.grid.IsOnMap(pos.x, pos.y)) {
             node = MapController.instance.grid.GetNode(pos);
             if(!node.isOccupied) {
-                transform.position = new Vector3(pos.x,0,pos.y);
+                transform.position = new Vector3(pos.x, 0, pos.y);
                 node.Occupy();
                 Debug.Log($"{name} initialized");
             } else {

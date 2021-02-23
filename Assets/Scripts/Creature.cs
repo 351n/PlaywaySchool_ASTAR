@@ -10,10 +10,6 @@ public class Creature : Entity
         Initialize();
     }
 
-    void Update() {
-
-    }
-
     public bool CanSee(Vector2Int origin, Vector2Int target) {
         float distance = Vector2.Distance(origin, target);
         Vector3 virutualPos = new Vector3(origin.x, 0.7f, origin.y);
@@ -34,23 +30,17 @@ public class Creature : Entity
         }
     }
 
-    public bool CanSee(Node targetNode) {
-       return CanSee(pos, targetNode.position);
-    }
-
-    public bool CanSee(Node origin, Node targetNode) {
-        return CanSee(origin.position, targetNode.position);
-    }
-
     public void Initialize() {
         base.Initialize();
         combat = GetComponent<Combat>();
     }
 
-    public void MoveTo(Node node) {
+    public void MoveTo(Node destination) {
         this.node.Unoccupy();
-        node.Occupy();
-        transform.position = new Vector3(node.position.x, 0, node.position.y);
-        pos = node.position;
+
+        destination.Occupy();
+        node = destination;
+        pos = destination.position;
+        transform.position = new Vector3(pos.x, 0, pos.y);
     }
 }

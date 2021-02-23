@@ -6,44 +6,56 @@ using UnityEngine;
 public class EnemyController : Creature
 {
     PlayerController player;
-    void Start()
-    {
-        Initialize();        
+
+    private float[] distances = new float[8];
+
+    void Start() {
+        Initialize();
     }
 
 
-    void Update()
-    {
+    void Update() {
         if(Input.GetKeyUp(KeyCode.S)) {
             CanSee(pos, player.pos);
         }
+    }
 
+    public void UpdateHide() {
         if(CanSee(pos, player.pos)) {
             LookForHide();
         }
     }
 
     private void LookForHide() {
-        List<Node> result = MapController.instance.grid.GetNeighbours(node);
-        List<float> distances = new List<float>();
-       
-        foreach(Node n in result) {
-            distances.Add(Vector2.Distance(n.position,player.pos));
+        ResetDistances();
+        List<Node> neighbours = MapController.instance.grid.GetNeighbours(node);
+
+        for(int nIndex = 0; nIndex < neighbours.Count; nIndex++) {
+            Node n = neighbours[nIndex];
+            distances[nIndex] = Vector2.Distance(n.position, player.pos);
             if(!CanSee(n.position, player.pos)) {
-                Debug.Log($"From {n.position} player cant see");
+                //Debug.Log($"From {n.position} player cant see");
                 MoveTo(n);
                 break;
             }
 
             float max = float.MinValue;
+            int maxIndex = 0;
 
-            for(int i = 0; i < distances.Count; i++) {
+            for(int i = 0; i < distances.Length; i++) {
                 if(distances[i] > max) {
                     max = distances[i];
+                    maxIndex = i;
                 }
             }
 
-            MoveTo(result[distances.IndexOf(max)]);
+            MoveTo(neighbours[maxIndex]);
+        }
+    }
+
+    private void ResetDistances() {
+        for(int i = 0; i < distances.Length; i++) {
+            distances[i] = 0;
         }
     }
 

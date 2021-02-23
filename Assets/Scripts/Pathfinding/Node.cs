@@ -22,7 +22,7 @@ public class Node
     }
 
     public Node(int x, int y, bool isOccupied = false) {
-        this.position = new Vector2Int(x,y);
+        this.position = new Vector2Int(x, y);
         this.previousNode = null;
         this.isOccupied = isOccupied;
     }
@@ -33,18 +33,19 @@ public class Node
     }
 
     private bool SetOccupyStatus(bool status) {
-        if(status != isOccupied) {
+        if(isOccupied != status) {
             isOccupied = status;
             return true;
         }
         return false;
     }
 
-    public bool Occupy() {
-        return SetOccupyStatus(true);
+    public void Occupy() {
+        SetOccupyStatus(true);
     }
 
-    public bool Unoccupy() {
-        return SetOccupyStatus(false);
+    public void Unoccupy() {
+        SetOccupyStatus(false);
+        //Debug.Log($"{position} Unoccupied");
     }
 }

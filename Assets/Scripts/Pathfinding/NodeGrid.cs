@@ -14,7 +14,7 @@ public class NodeGrid
     public NodeGrid(int width, int height) {
         this.width = width;
         this.height = height;
-        nodes = new Node[width,height];
+        nodes = new Node[width, height];
 
         CreateNodes();
     }
@@ -50,17 +50,17 @@ public class NodeGrid
     public List<Node> GetNeighbours(Node node) {
         List<Node> result = new List<Node>();
         for(int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
+            for(int y = -1; y <= 1; y++) {
                 if(x == 0 && y == 0) continue;
                 if(IsOnMap(node.position.x + x, node.position.y + y)) {
                     result.Add(GetNode(node.position + new Vector2Int(x, y)));
                 }
             }
         }
-        return result;        
+        return result;
     }
 
     public bool IsOnMap(int x, int y) {
-        return x < width && x>=0 && y < height && y>=0;
+        return x < width && x >= 0 && y < height && y >= 0;
     }
 }
