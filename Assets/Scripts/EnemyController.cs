@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyController : Creature
 {
     PlayerController player;
+    List<Node> neighbours;
 
     private float[] distances = new float[8];
 
@@ -31,18 +32,25 @@ public class EnemyController : Creature
     }
 
     private void LookForHide() {
-        ResetDistances();
-        List<Node> neighbours = MapController.instance.grid.GetNeighbours(node);
+        for (int r = 1; r <= 10; r++) {
+            Debug.Log("There");
+            neighbours = MapController.instance.grid.GetNeighbours(node,range: r);
 
+            for(int nIndex = 0; nIndex < neighbours.Count; nIndex++) {
+                Node n = neighbours[nIndex];
+                if(n.canHide) {
+                    MoveTo(n);
+                    return;
+                }                
+            }
+        }
+
+        ResetDistances();
+
+        neighbours = MapController.instance.grid.GetNeighbours(node,5);
         for(int nIndex = 0; nIndex < neighbours.Count; nIndex++) {
             Node n = neighbours[nIndex];
             distances[nIndex] = Vector2.Distance(n.position, player.pos);
-            if(!CanSee(n.position, player.pos)) {
-                //Debug.Log($"From {n.position} player cant see");
-                MoveTo(n);
-                break;
-            }
-
             float max = float.MinValue;
             int maxIndex = 0;
 

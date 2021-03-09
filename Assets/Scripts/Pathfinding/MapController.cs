@@ -89,7 +89,7 @@ public class MapController : MonoBehaviour
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
-            foreach(Node n in grid.GetNeighbours(currentNode)) {
+            foreach(Node n in grid.GetNeighbours(currentNode,1)) {
                 if(closedList.Contains(n)) continue;
 
                 int tempGcost = currentNode.Gcost + CalculateDistance(currentNode, n);

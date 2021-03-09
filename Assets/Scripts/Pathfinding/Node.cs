@@ -42,20 +42,18 @@ public class Node
         Vector3 virtualTarget = new Vector3(hideFrom.pos.x, 0.35f, hideFrom.pos.y);
         Vector3 dir = (virtualTarget - virutualPos).normalized;
 
-        //Debug.Log($"Checking ray between {virutualPos} and {virtualTarget}");
+        int layerMask = 1 << 7;
+        layerMask = ~layerMask;
 
         RaycastHit hit;
-        if(Physics.Raycast(virutualPos, dir, out hit, distance + 0.1f)) {
-            //Debug.DrawRay(virutualPos, dir * hit.distance, Color.yellow);
-            //Debug.Log($"Did Hit {hit.collider.gameObject.name}");
-            if(hit.collider.gameObject.tag.Equals("Player")) {
+        if(Physics.Raycast(virutualPos, dir, out hit, distance + 0.1f,layerMask)) {
+            string tag = hit.collider.gameObject.tag;
+            if(tag.Equals("Player") || tag.Equals("Enemy")) {
                 canHide = false;
             } else {
                 canHide = true;
             }            
         } else {
-            //Debug.DrawRay(virutualPos, dir * 1000, Color.white);
-            //Debug.Log("Did not Hit");
             canHide = false;
         }
         UpdateDebug();
@@ -64,7 +62,7 @@ public class Node
 
     internal void UpdateDebug() {
         if(canHide) {
-            debugText.text = $"Hide";
+            debugText.text = $"H";
         } else {
             debugText.text = $"";
         }

@@ -53,16 +53,18 @@ public class NodeGrid
         }
     }
 
-    public List<Node> GetNeighbours(Node node) {
+    public List<Node> GetNeighbours(Node node,int range) {
         List<Node> result = new List<Node>();
-        for(int x = -1; x <= 1; x++) {
-            for(int y = -1; y <= 1; y++) {
+        for(int x = -range; x <= range; x++) {
+            for(int y = -range; y <= range; y++) {
                 if(x == 0 && y == 0) continue;
                 if(IsOnMap(node.position.x + x, node.position.y + y)) {
                     result.Add(GetNode(node.position + new Vector2Int(x, y)));
                 }
             }
         }
+
+        Debug.Log($"For r = {range}: {result.Count}");
         return result;
     }
 
