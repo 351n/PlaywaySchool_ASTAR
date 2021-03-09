@@ -45,10 +45,14 @@ public class Node
         //Debug.Log($"Checking ray between {virutualPos} and {virtualTarget}");
 
         RaycastHit hit;
-        if(Physics.Raycast(virutualPos, dir, out hit, distance+0.1f)) {
+        if(Physics.Raycast(virutualPos, dir, out hit, distance + 0.1f)) {
             //Debug.DrawRay(virutualPos, dir * hit.distance, Color.yellow);
             //Debug.Log($"Did Hit {hit.collider.gameObject.name}");
-            canHide = true;
+            if(hit.collider.gameObject.tag.Equals("Player")) {
+                canHide = false;
+            } else {
+                canHide = true;
+            }            
         } else {
             //Debug.DrawRay(virutualPos, dir * 1000, Color.white);
             //Debug.Log("Did not Hit");
