@@ -5,6 +5,11 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     public Node node;
+    public TextMesh debugText;
+
+    private void Start() {
+        node.debugText = debugText;
+    }
 
     private void OnMouseUp() {
         if(!node.isOccupied) {

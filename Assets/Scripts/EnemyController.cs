@@ -9,10 +9,6 @@ public class EnemyController : Creature
 
     private float[] distances = new float[8];
 
-    void Start() {
-        Initialize();
-    }
-
 
     void Update() {
         if(Input.GetKeyUp(KeyCode.S)) {
@@ -20,9 +16,17 @@ public class EnemyController : Creature
         }
     }
 
+    override public void Initialize() {
+        base.Initialize();
+        player = FindObjectOfType<PlayerController>();
+    }
+
     public void UpdateHide() {
-        if(CanSee(pos, player.pos)) {
-            LookForHide();
+        if(player) {
+            MapController.instance.CalculateHides(player);
+            if(CanSee(pos, player.pos)) {
+                LookForHide();
+            }
         }
     }
 
@@ -59,8 +63,5 @@ public class EnemyController : Creature
         }
     }
 
-    public void Initialize() {
-        base.Initialize();
-        player = FindObjectOfType<PlayerController>();
-    }
+   
 }

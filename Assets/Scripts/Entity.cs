@@ -8,18 +8,13 @@ public class Entity : MonoBehaviour
     public Node node;
     //multifield (?)
 
-    void Start() {
-        Initialize();
-    }
-
-    public void Initialize() {
+    public virtual void Initialize() {
         pos = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
         if(MapController.instance.grid.IsOnMap(pos.x, pos.y)) {
             node = MapController.instance.grid.GetNode(pos);
             if(!node.isOccupied) {
-                transform.position = new Vector3(pos.x, 0, pos.y);
+                transform.position = new Vector3(pos.x, 0.5f, pos.y);
                 node.Occupy();
-                Debug.Log($"{name} initialized");
             } else {
                 Debug.LogWarning($"{name} tried to occypy {pos} but its already occupied. Destroing gameobject");
                 //Destroy(this.gameObject);

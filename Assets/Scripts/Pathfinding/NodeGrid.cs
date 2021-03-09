@@ -10,6 +10,7 @@ public class NodeGrid
     public int height { get; private set; }
 
     Node[,] nodes;
+    private List<Node> nodesList = new List<Node>();
 
     public NodeGrid(int width, int height) {
         this.width = width;
@@ -26,6 +27,7 @@ public class NodeGrid
             for(int y = 0; y < height; y++) {
                 Node n = new Node(x, y);
                 nodes[x, y] = n;
+                nodesList.Add(n);
                 var tile = MapController.instance.SpawnTile(new Vector3(x, 0, y));
                 tile.GetComponent<Tile>().node = n;
             }
@@ -36,6 +38,10 @@ public class NodeGrid
 
     internal Node GetNode(Vector2Int pos) {
         return GetNode(pos.x, pos.y);
+    }
+
+    internal List<Node> GetNodesList() {
+        return nodesList;
     }
 
     public Node GetNode(int x, int y) {

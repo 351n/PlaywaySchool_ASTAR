@@ -159,6 +159,14 @@ public class MapController : MonoBehaviour
         return result;
     }
 
+    internal void CalculateHides(Entity hideFrom) {
+        int count = 0;
+        foreach(Node n in grid.GetNodesList()) {
+            count++;
+            n.CalculateCanHide(hideFrom);
+        }
+    }
+
     public GameObject SpawnTile(Vector3 pos) {
         return Instantiate(tilePrefab, pos, MapController.instance.transform.rotation);
     }

@@ -6,14 +6,10 @@ public class Creature : Entity
 {
     public Combat combat;
 
-    void Start() {
-        Initialize();
-    }
-
     public bool CanSee(Vector2Int origin, Vector2Int target) {
         float distance = Vector2.Distance(origin, target);
-        Vector3 virutualPos = new Vector3(origin.x, 0.7f, origin.y);
-        Vector3 virtualTarget = new Vector3(target.x, 0.7f, target.y);
+        Vector3 virutualPos = new Vector3(origin.x, 0.35f, origin.y);
+        Vector3 virtualTarget = new Vector3(target.x, 0.35f, target.y);
         Vector3 dir = (virtualTarget - virutualPos).normalized;
 
         //Debug.Log($"Checking ray between {virutualPos} and {virtualTarget}");
@@ -30,17 +26,20 @@ public class Creature : Entity
         }
     }
 
-    public void Initialize() {
+    override public void Initialize() {
         base.Initialize();
         combat = GetComponent<Combat>();
     }
 
     public void MoveTo(Node destination) {
-        this.node.Unoccupy();
+       List<Node> path = MapController.instance.FindPath(this.node.position, destination.position);
+        foreach(Node n in path) {
+            this.node.Unoccupy();
 
-        destination.Occupy();
-        node = destination;
-        pos = destination.position;
-        transform.position = new Vector3(pos.x, 0, pos.y);
+            n.Occupy();
+            node = n;
+            pos = n.position;
+            transform.position = new Vector3(pos.x, 0.5f, pos.y);
+        }        
     }
 }
